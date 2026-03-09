@@ -1,18 +1,15 @@
 import { AppTextStringConstants } from "../constants/AppTextStringConstants"
 import { Theme } from "../constants/Theme"
 
-@Builder
-export function  LoginPageBuilder(){
-  LoginPage()
-}
 
+@Entry
 @Component
 struct LoginPage{
 
-  @Consume pathStack:NavPathStack
+  @Provide pathStack:NavPathStack = new NavPathStack()
 
   build() {
-      NavDestination(){
+      Navigation(this.pathStack){
          Column({space:30}){
               Column({space:10}){
                 Text(AppTextStringConstants.APP_NAME)
@@ -64,7 +61,7 @@ struct LoginPage{
                   bottom:10
                 })
                 .onClick(()=>{
-                  this.pathStack.replacePathByName("Home",null)
+                 this.pathStack.replacePathByName("Home",null)
                 })
 
 

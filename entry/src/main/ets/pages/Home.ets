@@ -28,6 +28,7 @@ struct Home{
       .height('100%')
 
     }
+    .hideTitleBar(true)
 
   }
 }

@@ -8,9 +8,15 @@
     }
     , {
       "name": "Home",
-      "pageSourceFile": "src/main/ets/pages/HomePage/Home.ets",
+      "pageSourceFile": "src/main/ets/pages/Home.ets",
       "buildFunction": "HomeBuilder",
       "data": {"description": "这是首页"}
+    },
+    {
+      "name": "WorkOrderDetailPage",
+      "pageSourceFile": "src/main/ets/pages/WorkOrderDetailPage.ets",
+      "buildFunction": "WorkOrderDetailPageBuilder",
+      "data": {"description": "这是工单详细页"}
     }
   ]
 }

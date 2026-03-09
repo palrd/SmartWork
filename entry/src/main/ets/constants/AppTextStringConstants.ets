@@ -1,4 +1,5 @@
 export class AppTextStringConstants{
+
   static APP_NAME:string = 'SmartWork'
 
   static APP_DESCRIPTION:string = '移动工单协作平台'
@@ -11,7 +12,9 @@ export class AppTextStringConstants{
 
   static HOMEPAGE:string = '首页'
 
-  static WORK_ORDER_PAGE = '工单'
+  static WORK_ORDER_PAGE:string = '工单'
+
+  static WORK_ORDER_DETAIL_PAGE:string = "工单详细"
 
   static PREPARE_OA:string= '待办工单'
 
@@ -27,10 +30,17 @@ export class AppTextStringConstants{
 
   static CREATE_NEW:string = '新建'
 
+  static SCENE_PHOTO:string = '现场照片'
 
+  static SUBMIT_PERSON:string = '提交人'
 
+  static LOCATION_CHECK_IN:string = '定位打卡'
 
+  static USER_NAME:string = '帕拉德帕'
 
+  static REJECT_HANDLE:string = '驳回'
+
+  static AGREE_HANDLE:string = '同意审批'
 
 
 

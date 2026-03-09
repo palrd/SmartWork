@@ -1,6 +1,6 @@
-import { HandleListItem } from "../../components/HandleListItem"
-import { AppTextStringConstants } from "../../constants/AppTextStringConstants"
-import { Theme } from "../../constants/Theme"
+import { HandleListItem } from "../components/HandleListItem"
+import { AppTextStringConstants } from "../constants/AppTextStringConstants"
+import { Theme } from "../constants/Theme"
 
 
 @Component
@@ -8,7 +8,7 @@ export struct HomePage{
   @Consume pathStack:NavPathStack
 
   build() {
-    Column({space:25}){
+    Column({space:15}){
       Text(AppTextStringConstants.HOMEPAGE)
         .fontSize(Theme.LargeTitle.fontsize)
         .fontWeight(Theme.LargeTitle.fontWeight)
@@ -63,9 +63,7 @@ export struct HomePage{
         .fontColor(Theme.SecondaryText.fontColor)
 
       List({space:10}){
-        ForEach([1,2,3],()=>{
-          HandleListItem({handleData:{title:"网络设备巡检",status:0,description:"A区机房状态路由状态异常",createTime:"10:30"}})
-        })
+        HandleListItem({useSelfPadding:false,handleData:{title:"网络设备巡检",status:0,description:"A区机房状态路由状态异常",createTime:"10:30"}})
       }
 
 
@@ -82,5 +80,6 @@ export struct HomePage{
       left:20,
       right:20
     })
+
   }
 }

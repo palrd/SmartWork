@@ -141,7 +141,7 @@ struct WorkOrderDetailPage{
         .backgroundColor(Theme.PrimaryBackGround2)
         .align(Alignment.TopStart)
         .scrollBar(BarState.Off)
-        .padding({bottom:100})
+        .padding({bottom:120})
 
 
         Row(){
@@ -177,7 +177,7 @@ struct WorkOrderDetailPage{
 
         }
         .padding(20)
-        .height(80)
+        .height(100)
         .width('100%')
         .backgroundColor(Theme.SecondaryBackGround)
         .justifyContent(FlexAlign.SpaceBetween)
@@ -193,10 +193,6 @@ struct WorkOrderDetailPage{
 
     }
     .title(AppTextStringConstants.WORK_ORDER_DETAIL_PAGE)
-
-
-
-
 
 
 

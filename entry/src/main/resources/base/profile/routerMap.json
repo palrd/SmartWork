@@ -23,6 +23,18 @@
       "pageSourceFile": "src/main/ets/pages/CreateWorkOrderPage.ets",
       "buildFunction": "CreateWorkOrderPageBuilder",
       "data": {"description": "这是新建工单页面"}
+    },
+    {
+      "name": "SettingPage",
+      "pageSourceFile": "src/main/ets/pages/SettingPage.ets",
+      "buildFunction": "SettingPageBuilder",
+      "data": {"description": "这是系统设置页面"}
+    },
+    {
+      "name": "WebViewPage",
+      "pageSourceFile": "src/main/ets/pages/WebViewPage.ets",
+      "buildFunction": "WebViewPageBuilder",
+      "data": {"description": "这是H5内嵌页面"}
     }
 
   ]

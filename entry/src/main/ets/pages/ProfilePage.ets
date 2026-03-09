@@ -4,6 +4,8 @@ import { Theme } from "../constants/Theme"
 
 @Component
 export struct ProfilePage{
+  @Consume pathStack:NavPathStack
+
   build() {
       NavDestination(){
 
@@ -104,6 +106,9 @@ export struct ProfilePage{
             .backgroundColor(Theme.PrimaryBackGround)
             .border({radius:20})
             .justifyContent(FlexAlign.SpaceBetween)
+          .onClick(()=>{
+            this.pathStack.pushPathByName("SettingPage",null)
+          })
 
 
 

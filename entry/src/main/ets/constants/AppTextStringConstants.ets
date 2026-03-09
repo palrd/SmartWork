@@ -70,6 +70,20 @@ export class AppTextStringConstants{
 
   static USER_POSITION:string = '移动端开发实习生'
 
+  static ACCEPT_THE_PUSH_NOTIFICATION:string = '接受推送通知'
+
+  static CLEAR_CACHES:string = '清除缓存'
+
+  static CACHE_SIZE:string = '12.5'
+
+  static ABOUT_SMART_WORK:string = '关于 SmartWork'
+
+  static APP_VERSION:string = '1.0.0'
+
+  static H5_MIXED_PRESENTATION:string = 'H5混合模块演示'
+
+  static LOGIN_OUT:string = '退出登录'
+
 
 
 

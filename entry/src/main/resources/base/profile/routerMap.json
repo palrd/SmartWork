@@ -1,0 +1,16 @@
+{
+  "routerMap":[
+    {
+      "name": "LoginPage",
+      "pageSourceFile": "src/main/ets/pages/LoginPage.ets",
+      "buildFunction": "LoginPageBuilder",
+      "data": {"description": "这是登录"}
+    }
+    , {
+      "name": "HomePage",
+      "pageSourceFile": "src/main/ets/pages/HomePage.ets",
+      "buildFunction": "HomePageBuilder",
+      "data": {"description": "这是首页"}
+    }
+  ]
+}

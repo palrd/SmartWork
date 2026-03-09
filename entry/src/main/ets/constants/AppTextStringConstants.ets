@@ -16,6 +16,8 @@ export class AppTextStringConstants{
 
   static WORK_ORDER_DETAIL_PAGE:string = "工单详细"
 
+  static CREATE_WORK_ORDER_PAGE:string = "新建工单"
+
   static PREPARE_OA:string= '待办工单'
 
   static FINISHED_OA:string= '本月完成'
@@ -30,17 +32,33 @@ export class AppTextStringConstants{
 
   static CREATE_NEW:string = '新建'
 
-  static SCENE_PHOTO:string = '现场照片'
+  static SCENE_PHOTO:string = '工单凭证'
 
   static SUBMIT_PERSON:string = '提交人'
 
-  static LOCATION_CHECK_IN:string = '定位打卡'
+  static LOCATION_CHECK_IN:string = '所在位置'
 
   static USER_NAME:string = '帕拉德帕'
 
   static REJECT_HANDLE:string = '驳回'
 
   static AGREE_HANDLE:string = '同意审批'
+
+  static TITLE_FOR_CREATE_WORK_ORDER:string = '工单标题（必选）'
+
+  static DESCRIPTION_FOR_CREATE_WORK_ORDER:string = '请详细描述问题...'
+
+  static TYPE_FOR_CREATE_WORK_ORDER:string = '工单类型'
+
+  static EXPECTATION_TIME_FOR_FINISH:string = '期望完成时间'
+
+  static UPDATE_SCENE_PHOTO:string =  '上传凭证'
+
+  static GET_LOCATION:string = '获取定位'
+
+  static SUBMIT_WORK_ORDER:string='提交工单'
+
+
 
 
 

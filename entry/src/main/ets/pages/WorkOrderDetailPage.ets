@@ -12,7 +12,7 @@ export function  WorkOrderDetailPageBuilder(){
 @Component
 struct WorkOrderDetailPage{
   @Consume pathStack:NavPathStack
-  handleData:HandleData = {title:"网络设备巡检",status:0,description:"A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常",createTime:"10:30"}
+  handleData:HandleData = {title:"网络设备巡检",status:0,description:"A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常",createTime:"10:30"}
 
   getStatus():string{
     if(this.handleData.status === 0){
@@ -90,8 +90,8 @@ struct WorkOrderDetailPage{
                   .fontWeight(Theme.PrimaryBody.fontWeight)
                   .fontColor(Theme.PrimaryBody.fontColor)
                 Text(AppTextStringConstants.USER_NAME)
-                  .fontSize(Theme.SecondaryText.fontsize)
-                  .fontWeight(Theme.SecondaryText.fontWeight)
+                  .fontSize(Theme.PrimaryBody.fontsize)
+                  .fontWeight(Theme.PrimaryBody.fontWeight)
                   .fontColor(Theme.SecondaryText.fontColor)
               }
               .width('100%')
@@ -127,11 +127,6 @@ struct WorkOrderDetailPage{
 
 
 
-
-
-
-
-
           }
           .width('100%')
           .alignItems(HorizontalAlign.Start)
@@ -145,6 +140,9 @@ struct WorkOrderDetailPage{
         .height('100%')
         .backgroundColor(Theme.PrimaryBackGround2)
         .align(Alignment.TopStart)
+        .scrollBar(BarState.Off)
+        .padding({bottom:100})
+
 
         Row(){
           Button(){
@@ -165,8 +163,8 @@ struct WorkOrderDetailPage{
 
           Button(){
             Text(AppTextStringConstants.AGREE_HANDLE)
-              .fontSize(Theme.PrimaryBody.fontsize)
-              .fontWeight(Theme.PrimaryBody.fontWeight)
+              .fontSize(Theme.Action_MediumBody_White.fontsize)
+              .fontWeight(Theme.Action_MediumBody_White.fontWeight)
               .fontColor(Theme.Action_MediumBody_White.fontColor)
           }
           .width('60%')
@@ -179,6 +177,7 @@ struct WorkOrderDetailPage{
 
         }
         .padding(20)
+        .height(80)
         .width('100%')
         .backgroundColor(Theme.SecondaryBackGround)
         .justifyContent(FlexAlign.SpaceBetween)

@@ -4,8 +4,9 @@ import { Theme } from '../constants/Theme'
 
 @Component
 export  struct WorkOrderListPage{
-  build() {
+  @Consume pathStack:NavPathStack
 
+  build() {
     Column({space:15}){
       Column(){
         Row(){
@@ -18,6 +19,9 @@ export  struct WorkOrderListPage{
             .fontSize(Theme.Action_MediumBody_Blue.fontsize)
             .fontWeight(Theme.Action_MediumBody_Blue.fontWeight)
             .fontColor(Theme.Action_MediumBody_Blue.fontColor)
+            .onClick(()=>{
+                this.pathStack.pushPathByName("CreateWorkOrderPage",null)
+            })
         }
         .width('100%')
         .justifyContent(FlexAlign.SpaceBetween)

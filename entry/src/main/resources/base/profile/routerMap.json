@@ -17,6 +17,12 @@
       "pageSourceFile": "src/main/ets/pages/WorkOrderDetailPage.ets",
       "buildFunction": "WorkOrderDetailPageBuilder",
       "data": {"description": "这是工单详细页"}
+    },
+    {
+      "name": "CreateWorkOrderPage",
+      "pageSourceFile": "src/main/ets/pages/CreateWorkOrderPage.ets",
+      "buildFunction": "CreateWorkOrderPageBuilder",
+      "data": {"description": "这是新建工单页面"}
     }
   ]
 }

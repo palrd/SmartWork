@@ -52,6 +52,8 @@ export class Theme{
   //主行动按钮、文字超链接、选中的图标、激活的开关。
   static PrimaryAccent:string = '#007AFF'
 
+  static PrimaryAccentBg:string = '#007bff'
+
   //警告色
   //适用场景： 删除按钮、报错提示文本、解散群组等危险操作。
   static Destructive:string = '#FF3B30'

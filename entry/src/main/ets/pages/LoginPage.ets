@@ -41,7 +41,7 @@ struct LoginPage{
                   .strokeWidth(1)
                   .color(Theme.TertiaryBackground)
 
-                TextInput({placeholder:AppTextStringConstants.PERSON_DATA_EMAIL})
+                TextInput({placeholder:AppTextStringConstants.PERSON_DATA_PASSWORD})
                   .fontSize(Theme.PrimaryBody.fontsize)
                   .fontWeight(Theme.PrimaryBody.fontWeight)
                   .fontColor(Theme.PrimaryBody.fontColor)
@@ -64,7 +64,7 @@ struct LoginPage{
                   bottom:10
                 })
                 .onClick(()=>{
-                  this.pathStack.replacePathByName("HomePage",null)
+                  this.pathStack.replacePathByName("Home",null)
                 })
 
 

@@ -7,9 +7,9 @@
       "data": {"description": "这是登录"}
     }
     , {
-      "name": "HomePage",
-      "pageSourceFile": "src/main/ets/pages/HomePage.ets",
-      "buildFunction": "HomePageBuilder",
+      "name": "Home",
+      "pageSourceFile": "src/main/ets/pages/HomePage/Home.ets",
+      "buildFunction": "HomeBuilder",
       "data": {"description": "这是首页"}
     }
   ]

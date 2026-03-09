@@ -1,0 +1,33 @@
+import { HomePage } from "./HomePage"
+import { WorkOrderListPage } from "./WorkOrderListPage"
+
+
+@Builder
+export function  HomeBuilder(){
+  Home()
+}
+
+@Component
+struct Home{
+  @Consume pathStack:NavPathStack
+
+
+  build() {
+    NavDestination(){
+      Tabs({barPosition:BarPosition.End}){
+        TabContent(){
+          HomePage()
+        }
+        TabContent(){
+          WorkOrderListPage()
+        }
+
+
+      }
+      .width('100%')
+      .height('100%')
+
+    }
+
+  }
+}

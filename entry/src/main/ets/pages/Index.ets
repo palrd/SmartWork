@@ -5,8 +5,8 @@ import { Theme } from '../constants/Theme'
 struct Index {
   @Provide pathStack:NavPathStack = new NavPathStack()
 
-  onPageShow(): void {
-    this.pathStack.replacePathByName('LoginPage',null)
+  aboutToAppear(): void {
+    this.pathStack.pushPathByName('LoginPage',null)
   }
 
   @Builder
@@ -22,5 +22,6 @@ struct Index {
       .height('100%')
       .width('100%')
     }
+    .hideTitleBar(true)
   }
 }

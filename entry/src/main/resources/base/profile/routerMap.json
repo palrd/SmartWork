@@ -24,5 +24,6 @@
       "buildFunction": "CreateWorkOrderPageBuilder",
       "data": {"description": "这是新建工单页面"}
     }
+
   ]
 }

@@ -20,6 +20,8 @@ export class AppTextStringConstants{
 
   static PREPARE_OA:string= '待办工单'
 
+  static PROFILE_PAGE:string = '我的'
+
   static FINISHED_OA:string= '本月完成'
 
   static RECENTLY_HANDLE:string= '最近处理'
@@ -57,6 +59,20 @@ export class AppTextStringConstants{
   static GET_LOCATION:string = '获取定位'
 
   static SUBMIT_WORK_ORDER:string='提交工单'
+
+  static SETTING_PAGE:string='系统设置'
+
+  static WORK_ORDER_STATISTICS:string = '工单统计'
+
+  static ATTENDANCE_RECORD:string = '考勤记录'
+
+  static USER_DEPARTMENT:string = '研发部'
+
+  static USER_POSITION:string = '移动端开发实习生'
+
+
+
+
 
 
 

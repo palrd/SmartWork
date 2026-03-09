@@ -1,4 +1,5 @@
 import { HomePage } from "./HomePage"
+import { ProfilePage } from "./ProfilePage"
 import { WorkOrderListPage } from "./WorkOrderListPage"
 
 
@@ -20,6 +21,9 @@ struct Home{
         }
         TabContent(){
           WorkOrderListPage()
+        }
+        TabContent(){
+          ProfilePage()
         }
 
 

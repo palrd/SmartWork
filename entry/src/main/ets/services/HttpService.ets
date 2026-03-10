@@ -15,7 +15,7 @@ class HttpService {
         method: http.RequestMethod.GET
       })
 
-      let result = httpResponse.result as T
+      let result =JSON.parse( httpResponse.result  as string) as T
 
       return result
     } catch (err) {
@@ -47,7 +47,7 @@ class HttpService {
 
       //处理回来的数据
       //处理后强转为需要的参数
-      let result = httpResponse.result as T
+      let result =JSON.parse( httpResponse.result  as string) as T
 
       return result
     }catch (e){

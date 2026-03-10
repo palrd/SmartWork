@@ -1,1 +1,1 @@
-export class  TokenManagerUtil{}
+export class TokenManagerUtil{}

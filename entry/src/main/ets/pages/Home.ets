@@ -6,7 +6,7 @@ import { WorkOrderListPage } from "./WorkOrderListPage"
 
 
 @Builder
-export function  HomeBuilder(){
+export function HomeBuilder(){
   Home()
 }
 

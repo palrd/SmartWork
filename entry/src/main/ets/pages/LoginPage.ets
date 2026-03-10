@@ -1,15 +1,48 @@
+import { AppErrorStringConstants } from "../constants/AppErrorStringConstants"
+import { AppShowToastStringConstants } from "../constants/AppShowToastStringConstants"
 import { AppTextStringConstants } from "../constants/AppTextStringConstants"
 import { Theme } from "../constants/Theme"
+import { UserDTO } from "../models/DTO/UserDTO"
+import { loginRepository } from "../repository/LoginRepository"
+import { ToastUtil } from "../utils/ToastUtil"
 
 
-@Entry
+@Builder
+export function LoginPageBuilder(){
+  LoginPage()
+}
+
+
 @Component
 struct LoginPage{
 
-  @Provide pathStack:NavPathStack = new NavPathStack()
+  @Consume pathStack:NavPathStack
+  @State userDTO:UserDTO = {
+    username:'',
+    password:''
+  }
+
+  //登录方法
+  async login(){
+    try {
+      if(this.userDTO.username !== '' && this.userDTO.password!== ''){
+        await loginRepository.login(this.userDTO)
+        this.pathStack.replacePathByName("Home",null)
+        ToastUtil.showToast(this.getUIContext(),AppShowToastStringConstants.LOGIN_SUCCESS+this.userDTO.username)
+
+      }else {
+        ToastUtil.showToast(this.getUIContext(),AppErrorStringConstants.MISS_LOGIN_USER_NAME)
+
+      }
+    }catch (e){
+      console.log(String(e))
+    }
+
+
+  }
 
   build() {
-      Navigation(this.pathStack){
+      NavDestination(){
          Column({space:30}){
               Column({space:10}){
                 Text(AppTextStringConstants.APP_NAME)
@@ -24,7 +57,6 @@ struct LoginPage{
               }
               .alignItems(HorizontalAlign.Start)
 
-
               Column({space:10}){
                 TextInput({placeholder:AppTextStringConstants.PERSON_DATA_EMAIL})
                   .fontSize(Theme.PrimaryBody.fontsize)
@@ -32,6 +64,9 @@ struct LoginPage{
                   .fontColor(Theme.PrimaryBody.fontColor)
                   .backgroundColor(Color.Transparent)
                   .placeholderColor(Theme.Caption_PlaceHolder.fontColor)
+                  .onChange((value:string)=>{
+                    this.userDTO.username = value
+                  })
 
                 Divider()
                   .width('100%')
@@ -44,6 +79,9 @@ struct LoginPage{
                   .fontColor(Theme.PrimaryBody.fontColor)
                   .backgroundColor(Color.Transparent)
                   .placeholderColor(Theme.Caption_PlaceHolder.fontColor)
+                  .onChange((value:string)=>{
+                    this.userDTO.password = value
+                  })
 
               }
               .border({
@@ -61,10 +99,8 @@ struct LoginPage{
                   bottom:10
                 })
                 .onClick(()=>{
-                 this.pathStack.replacePathByName("Home",null)
+                    this.login()
                 })
-
-
 
               }
         .width('100%')

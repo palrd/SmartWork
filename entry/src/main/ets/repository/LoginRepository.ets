@@ -15,11 +15,12 @@ export class LoginRepository{
      let result:UserVO = await httpService.postRequest<UserVO>(ApiConstants.baseURL+ApiConstants.loginAPI,userDTO)
      //进行token存储
      await preferenceService.putPreference(AppPreferenceConstants.USER_TOKEN,result.username)
-     //不出问题的话UI那边就会进入下一个页面
    }catch (e){
       throw new Error(String(e))
    }
 
 
   }
-}
+  }
+
+export const loginRepository = new LoginRepository()

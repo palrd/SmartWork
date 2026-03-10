@@ -11,6 +11,7 @@ class PreferenceService{
     //尝试获取
     try {
       this.preference =await preferences.getPreferences(context,AppPreferenceConstants.AuthPreference)
+      console.log("preference初始化成功");
     }catch (e){
       throw new Error(String(e))
     }
@@ -62,6 +63,22 @@ class PreferenceService{
       throw new Error(String(e))
     }
 
+
+  }
+
+  //查询是否存在某个值
+  async hasPreference(key:string):Promise<boolean>{
+
+    try {
+      if(!this.preference){
+        throw new Error("preference还未初始化!")
+
+      }
+      await this.preference.has(key)
+      return true
+    }catch (e){
+      throw new Error(String(e))
+    }
   }
 
 

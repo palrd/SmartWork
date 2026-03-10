@@ -181,7 +181,7 @@ struct WorkOrderDetailPage{
         .width('100%')
         .backgroundColor(Theme.SecondaryBackGround)
         .justifyContent(FlexAlign.SpaceBetween)
-        .position({bottom:0})
+        .position({bottom:0,right:0,left:0})
         .border({
           radius:{
             topLeft:20,

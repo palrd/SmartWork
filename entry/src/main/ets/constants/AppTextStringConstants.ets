@@ -46,7 +46,7 @@ export class AppTextStringConstants{
 
   static AGREE_HANDLE:string = '同意审批'
 
-  static TITLE_FOR_CREATE_WORK_ORDER:string = '工单标题（必选）'
+  static TITLE_FOR_CREATE_WORK_ORDER:string = '工单标题（必填写）'
 
   static DESCRIPTION_FOR_CREATE_WORK_ORDER:string = '请详细描述问题...'
 
@@ -83,13 +83,6 @@ export class AppTextStringConstants{
   static H5_MIXED_PRESENTATION:string = 'H5混合模块演示'
 
   static LOGIN_OUT:string = '退出登录'
-
-
-
-
-
-
-
 
 
 

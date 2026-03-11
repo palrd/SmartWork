@@ -23,7 +23,7 @@ export class AppDataBaseStringConstants{
 
 
   //========SQL==============
-  static TABLE_WORK_ORDER_SQL:string = "CREATE TABLE IF NOT EXISTS workOrder(id INTEGER PRIMARY KEY AUTOINCREMENT,workOrderTitle TEXT,workOrderDetail TEXT,status INTEGER,submitPerson TEXT,locationCheck TEXT);"
+  static TABLE_WORK_ORDER_SQL:string = "CREATE TABLE IF NOT EXISTS workOrder(id INTEGER PRIMARY KEY AUTOINCREMENT,workOrderTitle TEXT,workOrderDetail TEXT,status INTEGER,submitPerson TEXT,locationCheck TEXT，createTime INTEGER);"
   static TABLE_WORK_ORDER_SCENE_SQL:string = "CREATE TABLE IF NOT EXISTS workOrderScene (id INTEGER PRIMARY KEY AUTOINCREMENT, workOrderId INTEGER, scenePath TEXT);"
   static QUERY_ALL_SQL:string = "SELECT * FROM "
   static QUERY_COUNT_WITH_READY:string = "SELECT count(*) FROM " + AppDataBaseStringConstants.TABLE_WORK_ORDER_NAME+" WHERE STATUS = 1"
@@ -37,6 +37,7 @@ export class AppDataBaseStringConstants{
   static TABLE_WORK_ORDER_SCENE: string = "workOrderScene";
   static TABLE_SUBMIT_PERSON: string = "submitPerson";
   static TABLE_LOCATION_CHECK: string = "locationCheck";
+  static TABLE_CREATE_TIME: string = "createTime";
 
   static SCENE_ID: string = "id";
   static SCENE_PATH: string="scenePath"

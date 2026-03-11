@@ -22,7 +22,7 @@ export class AppTextStringConstants{
 
   static PROFILE_PAGE:string = '我的'
 
-  static FINISHED_OA:string= '本月完成'
+  static FINISHED_OA:string= '已完成'
 
   static RECENTLY_HANDLE:string= '最近处理'
 
@@ -42,9 +42,9 @@ export class AppTextStringConstants{
 
   static USER_NAME:string = '帕拉德帕'
 
-  static REJECT_HANDLE:string = '驳回'
+  static REJECT_HANDLE:string = '取消'
 
-  static AGREE_HANDLE:string = '同意审批'
+  static CONFIRM_FINISH:string = '确认完成'
 
   static TITLE_FOR_CREATE_WORK_ORDER:string = '工单标题（必填写）'
 

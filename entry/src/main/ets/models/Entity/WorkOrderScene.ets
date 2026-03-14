@@ -1,18 +1,18 @@
 import relationalStore from "@ohos.data.relationalStore"
 import { AppDataBaseStringConstants } from "../../constants/AppDataBaseStringConstants"
 
-@Observed
+@ObservedV2
 export class WorkOrderScene{
-  id:number
-  scenePath:string
-  workOrderId:number
+  @Trace id?:number
+  @Trace scenePath:string
+  @Trace workOrderId?:number
 
-  constructor(id:number,
+  constructor(id:number|null,
   scenePath:string,
-  workOrderId:number) {
-    this.id =id
+  workOrderId:number|null) {
+    this.id =id!
     this.scenePath = scenePath
-    this.workOrderId =workOrderId
+    this.workOrderId =workOrderId!
 
   }
 

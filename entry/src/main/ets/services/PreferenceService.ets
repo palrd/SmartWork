@@ -7,10 +7,10 @@ class PreferenceService{
   preference:preferences.Preferences|null = null
 
   //初始化方法
-  async initUserPreference(context:Context):Promise<void>{
+  async initUserPreference(context:Context,name:string):Promise<void>{
     //尝试获取
     try {
-      this.preference =await preferences.getPreferences(context,AppPreferenceConstants.AuthPreference)
+      this.preference =await preferences.getPreferences(context,name)
       console.log("preference初始化成功");
     }catch (e){
       throw new Error(String(e))
@@ -78,6 +78,21 @@ class PreferenceService{
       return true
     }catch (e){
       throw new Error(String(e))
+    }
+  }
+
+  //删除某个值
+  async deletePreference(key:string):Promise<boolean>{
+    try {
+      if(!this.preference){
+        throw new Error("preference还未初始化!")
+
+      }
+      await this.preference.delete(key)
+      return true
+    }catch (e) {
+      throw new Error(String(e))
+
     }
   }
 

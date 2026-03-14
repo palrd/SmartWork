@@ -10,9 +10,10 @@ export function HomeBuilder(){
   Home()
 }
 
-@Component
+@ComponentV2
 struct Home{
-  @Consume pathStack:NavPathStack
+  @Consumer("pathStack") pathStack:NavPathStack =undefined!
+
 
 
   build() {
@@ -33,7 +34,6 @@ struct Home{
         .tabBar(AppTextStringConstants.PROFILE_PAGE)
 
 
-
       }
       .animationCurve(Curve.FastOutSlowIn)
       .width('100%')
@@ -42,6 +42,9 @@ struct Home{
       .backgroundColor(Theme.PrimaryBackGround2)
     }
     .hideTitleBar(true)
+    .onBackPressed(()=>{
+     return true
+    })
 
 
   }

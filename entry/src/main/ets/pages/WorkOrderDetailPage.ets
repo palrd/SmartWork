@@ -1,7 +1,9 @@
-import { HandleListItem,HandleData } from '../components/HandleListItem'
 import { AppTextStringConstants } from '../constants/AppTextStringConstants'
 import { Theme } from '../constants/Theme'
-import App from '@system.app'
+import { WorkOrder } from '../models/Entity/WorkOrder'
+import { WorkOrderScene } from '../models/Entity/WorkOrderScene'
+import { AppDataBaseStringConstants } from '../constants/AppDataBaseStringConstants'
+import { dataBaseRepo } from '../repository/DataBaseRepo'
 
 
 @Builder
@@ -9,43 +11,56 @@ export function  WorkOrderDetailPageBuilder(){
   WorkOrderDetailPage()
 }
 
-@Component
+@ComponentV2
 struct WorkOrderDetailPage{
-  @Consume pathStack:NavPathStack
-  handleData:HandleData = {title:"网络设备巡检",status:0,description:"A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常A区机房状态路由状态异常",createTime:"10:30"}
+  @Consumer("pathStack") pathStack:NavPathStack =undefined!
 
-  getStatus():string{
-    if(this.handleData.status === 0){
-      return AppTextStringConstants.STATUS_READY_TO_HANDLE
-    }
-    if(this.handleData.status === 1){
-      return AppTextStringConstants.STATUS_FINISHED
-    }
-    if(this.handleData.status === 2){
-      return AppTextStringConstants.STATUS_APPROVE
-    }
+  @Local workOrder:WorkOrder = WorkOrder.emptyConstruct()
 
-    //默认返回
-    return AppTextStringConstants.STATUS_APPROVE
+  aboutToAppear(): void {
+    this.loadData()
   }
+
+  async deleteNowWorkOrder():Promise<void>{
+    await dataBaseRepo.deleteNowWorkOrder()
+    this.pathStack.pop("delete")
+
+  }
+
+  async loadData():Promise<void>{
+    let order:WorkOrder =await  dataBaseRepo.getWorkOrderById()
+    this.workOrder.workOrderTitle = order.workOrderTitle
+    this.workOrder.workOrderDetail = order.workOrderDetail
+    this.workOrder.status =order.status
+    this.workOrder.workOrderScene = order.workOrderScene
+    this.workOrder.submitPerson = order.submitPerson
+    this.workOrder.locationCheck = order.locationCheck
+
+  }
+
+  async confirmFinish(){
+    await dataBaseRepo.updateWorkOrderToFinish()
+    this.pathStack.pop("finish")
+  }
+
   build() {
        NavDestination(){
       Stack(){
         Scroll(){
           Column({space:15}){
             Column({space:15}){
-              Text(this.handleData.title)
+              Text(this.workOrder.workOrderTitle)
                 .fontSize(Theme.PrimaryTitle.fontsize)
                 .fontWeight(Theme.PrimaryTitle.fontWeight)
                 .fontColor(Theme.PrimaryTitle.fontColor)
 
-              Text(this.getStatus())
+              Text(this.workOrder.StatusText)
                 .fontSize(Theme.SecondaryText.fontsize)
                 .fontWeight(Theme.SecondaryText.fontWeight)
                 .fontColor(Theme.PrimaryAccent)
 
 
-              Text(this.handleData.description)
+              Text(this.workOrder.workOrderDetail)
                 .fontSize(Theme.SecondaryText.fontsize)
                 .fontWeight(Theme.SecondaryText.fontWeight)
                 .fontColor(Theme.SecondaryText.fontColor)
@@ -66,22 +81,24 @@ struct WorkOrderDetailPage{
             .padding({left:20})
 
 
-            List({space:10}){
-              ForEach([1,2,3,4],()=>{
-
-                ListItem(){
-                  Image($r('app.media.background'))
-                    .objectFit(ImageFit.Cover)
-                    .border({radius:10})
-
-                }
-                .width(80)
-                .height(80)
-              })
+            if(this.workOrder?.workOrderScene?.length > 0){
+              List({space:10}){
+                ForEach(this.workOrder.workOrderScene,(item:WorkOrderScene)=>{
+                  ListItem(){
+                    Image($r('app.media.background'))
+                      .objectFit(ImageFit.Cover)
+                      .border({radius:10})
+                  }
+                  .width(80)
+                  .height(80)
+                })
+              }
+            }else{
+              Row(){
+                Text(AppDataBaseStringConstants.NO_DATA)
+              }
+              .justifyContent(FlexAlign.Center)
             }
-            .listDirection(Axis.Horizontal)
-            .scrollBar(BarState.Off)
-
 
             Column({space:15}){
               Row(){
@@ -89,7 +106,7 @@ struct WorkOrderDetailPage{
                   .fontSize(Theme.PrimaryBody.fontsize)
                   .fontWeight(Theme.PrimaryBody.fontWeight)
                   .fontColor(Theme.PrimaryBody.fontColor)
-                Text(AppTextStringConstants.USER_NAME)
+                Text(this.workOrder.submitPerson)
                   .fontSize(Theme.PrimaryBody.fontsize)
                   .fontWeight(Theme.PrimaryBody.fontWeight)
                   .fontColor(Theme.SecondaryText.fontColor)
@@ -106,7 +123,7 @@ struct WorkOrderDetailPage{
                   .fontSize(Theme.PrimaryBody.fontsize)
                   .fontWeight(Theme.PrimaryBody.fontWeight)
                   .fontColor(Theme.PrimaryBody.fontColor)
-                Text(AppTextStringConstants.USER_NAME)
+                Text(this.workOrder.locationCheck)
                   .fontSize(Theme.PrimaryBody.fontsize)
                   .fontWeight(Theme.PrimaryBody.fontWeight)
                   .fontColor(Theme.PrimaryAccent)
@@ -146,10 +163,10 @@ struct WorkOrderDetailPage{
 
         Row(){
           Button(){
-            Text(AppTextStringConstants.REJECT_HANDLE)
+            Text(AppTextStringConstants.DELETE_DATA)
               .fontSize(Theme.PrimaryBody.fontsize)
               .fontWeight(Theme.PrimaryBody.fontWeight)
-              .fontColor(Theme.PrimaryBody.fontColor)
+              .fontColor(Theme.Destructive)
           }
           .width('30%')
           .backgroundColor(Theme.SecondaryBackGround2)
@@ -159,10 +176,13 @@ struct WorkOrderDetailPage{
             top:15,
             bottom:15
           })
+          .onClick(()=>{
+            this.deleteNowWorkOrder()
 
+          })
 
           Button(){
-            Text(AppTextStringConstants.AGREE_HANDLE)
+            Text(AppTextStringConstants.CONFIRM_FINISH)
               .fontSize(Theme.Action_MediumBody_White.fontsize)
               .fontWeight(Theme.Action_MediumBody_White.fontWeight)
               .fontColor(Theme.Action_MediumBody_White.fontColor)
@@ -173,6 +193,10 @@ struct WorkOrderDetailPage{
             right:20,
             top:15,
             bottom:15
+          })
+          .onClick(()=>{
+              this.confirmFinish()
+
           })
 
         }

@@ -15,12 +15,24 @@ export class LoginRepository{
      let result:UserVO = await httpService.postRequest<UserVO>(ApiConstants.baseURL+ApiConstants.loginAPI,userDTO)
      //进行token存储
      await preferenceService.putPreference(AppPreferenceConstants.USER_TOKEN,result.username)
+     //储存用户名
+     await preferenceService.putPreference(AppPreferenceConstants.USER_NAME,result.username)
    }catch (e){
       throw new Error(String(e))
    }
 
+    }
 
+  async getUserName():Promise<string>{
+    try {
+      let userName:string = await preferenceService.getPreferenceValue(AppPreferenceConstants.USER_NAME)
+      return userName
+    }catch (e) {
+      throw new Error(String(e))
+
+    }
   }
+
   }
 
 export const loginRepository = new LoginRepository()

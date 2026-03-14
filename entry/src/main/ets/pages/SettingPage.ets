@@ -6,9 +6,10 @@ export function SettingPageBuilder(){
   SettingPage()
 }
 
-@Component
+@ComponentV2
 struct SettingPage{
-  @Consume pathStack:NavPathStack
+  @Consumer("pathStack") pathStack:NavPathStack =undefined!
+
   build() {
 
     NavDestination(){

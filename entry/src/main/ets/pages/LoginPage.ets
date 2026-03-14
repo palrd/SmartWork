@@ -13,11 +13,12 @@ export function LoginPageBuilder(){
 }
 
 
-@Component
+@ComponentV2
 struct LoginPage{
 
-  @Consume pathStack:NavPathStack
-  @State userDTO:UserDTO = {
+  @Consumer("pathStack") pathStack:NavPathStack =undefined!
+
+  @Local userDTO:UserDTO = {
     username:'',
     password:''
   }

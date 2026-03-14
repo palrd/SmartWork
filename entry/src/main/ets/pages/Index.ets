@@ -2,9 +2,9 @@ import { AppPageConstants } from '../constants/AppPageConstants'
 import { AppPreferenceConstants } from '../constants/AppPreferenceConstants'
 
 @Entry
-@Component
+@ComponentV2
 struct Index{
-  @Provide pathStack:NavPathStack= new NavPathStack()
+  @Provider("pathStack") pathStack:NavPathStack= new NavPathStack()
 
   aboutToAppear(): void {
     try {

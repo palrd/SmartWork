@@ -4,6 +4,8 @@ import { window } from '@kit.ArkUI';
 import { preferenceService } from '../services/PreferenceService';
 import { authCheckService } from '../services/AuthCheckService';
 import { AppPreferenceConstants } from '../constants/AppPreferenceConstants';
+import { dataBaseService } from '../services/DataBaseService';
+import { loginRepository } from '../repository/LoginRepository';
 
 const DOMAIN = 0x0000;
 
@@ -27,10 +29,14 @@ export default class EntryAbility extends UIAbility {
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
     try {
       //在此处初始化preferenceService
-      await preferenceService.initUserPreference(this.context)
+      await preferenceService.initUserPreference(this.context,AppPreferenceConstants.AuthPreference)
+      //初始化数据库
+      await dataBaseService.initDB(this.context)
       let isLogin =await authCheckService.checkLogin()
+      let userName = await loginRepository.getUserName()
 
       AppStorage.setOrCreate(AppPreferenceConstants.LOGIN_STATUS,isLogin)
+      AppStorage.setOrCreate(AppPreferenceConstants.USER_NAME,userName)
 
       windowStage.loadContent('pages/Index', (err) => {
         if (err.code) {

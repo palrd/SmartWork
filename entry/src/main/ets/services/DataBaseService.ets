@@ -24,6 +24,9 @@ class DataBaseService{
       await this.RDB.execute(AppDataBaseStringConstants.TABLE_WORK_ORDER_SCENE_SQL)
       console.log(AppDataBaseStringConstants.CREATE_TABLE_WORK_ORDER_SCENE_SUCCESSFULLY)
 
+
+
+
     }catch (e){
       console.error(AppDataBaseStringConstants.CREATE_DATABASE_FAILED)
       console.error(AppDataBaseStringConstants.CREATE_TABLE_WORK_ORDER_FAILED)

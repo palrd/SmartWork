@@ -1,11 +1,33 @@
 import { HandleListItem } from "../components/HandleListItem"
+import { AppDataBaseStringConstants } from "../constants/AppDataBaseStringConstants"
 import { AppTextStringConstants } from "../constants/AppTextStringConstants"
 import { Theme } from "../constants/Theme"
+import { WorkOrderDatasource } from "../dataSource/WorkOrderDataSource"
+import { WorkOrder } from "../models/Entity/WorkOrder"
+import { dataBaseRepo } from "../repository/DataBaseRepo"
 
 
-@Component
+@ComponentV2
 export struct HomePage{
-  @Consume pathStack:NavPathStack
+  @Consumer("pathStack") pathStack:NavPathStack =undefined!
+
+  @Local workOrders:Array<WorkOrder> = []
+  @Local finish:string = ''
+  @Local ready:string = ''
+
+  aboutToAppear(): void {
+    this.loadData()
+  }
+
+  async loadData(){
+    let result = await dataBaseRepo.getRecentlyWorkOrders()
+    this.workOrders = result
+    let map = await dataBaseRepo.getFinishAndReady()
+    this.ready = map.get(AppDataBaseStringConstants.READY)?.toString()!
+    this.finish = map.get(AppDataBaseStringConstants.FINISH)?.toString()!
+
+  }
+
 
   build() {
     Column({space:15}){
@@ -15,7 +37,7 @@ export struct HomePage{
         .fontColor(Theme.LargeTitle.fontColor)
       Row(){
         Column({space:40}){
-          Text('12')
+          Text(this.ready)
             .fontSize(Theme.PrimaryTitle.fontsize)
             .fontWeight(Theme.PrimaryTitle.fontWeight)
             .fontColor(Theme.PrimaryAccent)
@@ -35,7 +57,7 @@ export struct HomePage{
 
 
         Column({space:40}){
-          Text('20')
+          Text(this.finish)
             .fontSize(Theme.PrimaryTitle.fontsize)
             .fontWeight(Theme.PrimaryTitle.fontWeight)
             .fontColor(Theme.PrimaryAccent)
@@ -62,13 +84,24 @@ export struct HomePage{
         .fontWeight(Theme.SecondaryText.fontWeight)
         .fontColor(Theme.SecondaryText.fontColor)
 
-      List({space:10}){
-        HandleListItem({useSelfPadding:false,handleData:{title:"网络设备巡检",status:0,description:"A区机房状态路由状态异常",createTime:"10:30"}})
+      Column(){
+        List({space:10}){
+         Repeat(this.workOrders)
+           .each((orders:RepeatItem<WorkOrder>)=>{
+             ListItem(){
+               HandleListItem({workOrder:orders.item,useSelfPadding:false,useOneLine:true,action:()=>{this.loadData()}})
+             }
+           })
+           .key((item:WorkOrder)=>{return item.id?.toString()+'_'+item.status.toString()})
+        }
+        .height('100%')
+        .scrollBar(BarState.Off)
+        .width('100%')
       }
+      .justifyContent(FlexAlign.Start)
 
-
-
-
+      .padding({bottom:60})
+      .layoutWeight(1)
 
     }
     .width('100%')

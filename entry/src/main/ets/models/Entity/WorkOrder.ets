@@ -4,27 +4,27 @@ import relationalStore from '@ohos.data.relationalStore';
 import { AppDataBaseStringConstants } from '../../constants/AppDataBaseStringConstants';
 
 //对象数据层级比较深，要使用深层观察
-@Observed
+@ObservedV2
 export class WorkOrder{
   // 工单的唯一id
-  public id?: number;
+  @Trace public id?: number;
   // 工单名称
-  public workOrderTitle: string;
+  @Trace public workOrderTitle: string;
   // 工单详细
-  public workOrderDetail: string;
-  // 0表示待审核 1表示待处理 2表示已完成
-  public status: number;
+  @Trace public workOrderDetail: string;
+  // 0表示待处理 1表示已完成
+  @Trace public status: number;
   // 存储凭证路径的数组
-  public workOrderScene: Array<WorkOrderScene>;
+  @Trace public workOrderScene: Array<WorkOrderScene>;
   // 提交人
-  public submitPerson: string;
+  @Trace public submitPerson: string;
   // 所在位置
-  public locationCheck: string;
+  @Trace public locationCheck: string;
   //工单创建时间
-  public createTime:number;
+  @Trace public createTime:number;
 
   constructor(
-  id: number,
+  id: number | null,
   workOrderTitle: string,
   workOrderDetail: string,
   status: number,
@@ -33,7 +33,7 @@ export class WorkOrder{
   locationCheck: string,
     createTime:number
   ) {
-  this.id = id;
+  this.id = id!;
   this.workOrderTitle = workOrderTitle;
   this.workOrderDetail = workOrderDetail;
   this.status = status;
@@ -61,12 +61,23 @@ export class WorkOrder{
       throw new Error(e)
     }
   }
+
+  static emptyConstruct():WorkOrder{
+    return new WorkOrder(0,'','',0,[],'','',0)
+  }
+
+
+
+  static unUseAbleOrder():WorkOrder{
+    return new WorkOrder(0,'未知数据','未知数据',0,[],'未知数据','未知数据',0)
+
+  }
+
   get StatusText():string{
     switch (this.status){
-      case 0:return AppTextStringConstants.STATUS_APPROVE
-      case 1:return AppTextStringConstants.STATUS_READY_TO_HANDLE
-      case 2:return AppTextStringConstants.STATUS_FINISHED
-      default :return AppTextStringConstants.STATUS_APPROVE
+      case 0:return AppTextStringConstants.STATUS_READY_TO_HANDLE
+      case 1:return AppTextStringConstants.STATUS_FINISHED
+      default :return AppTextStringConstants.STATUS_READY_TO_HANDLE
     }
   }
 
@@ -90,7 +101,7 @@ export class WorkOrder{
       return "昨天"
     }
 
-    return `${date.getMonth()}-${date.getDate()}`
+    return `${date.getMonth()+1}-${date.getDate()}`
   }
 
   get hour():string{
@@ -99,6 +110,8 @@ export class WorkOrder{
     let m = date.getMinutes().toString().padStart(2,"0")
     return `${h}:${m}`
   }
+
+
 
 
 

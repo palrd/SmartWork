@@ -5,9 +5,10 @@ export function WebViewPageBuilder(){
   WebViewPage()
 }
 
-@Component
+@ComponentV2
 struct WebViewPage{
-  @Consume pathStack:NavPathStack
+  @Consumer("pathStack") pathStack:NavPathStack =undefined!
+
 
   build() {
     NavDestination(){

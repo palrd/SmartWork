@@ -7,6 +7,7 @@ export class AppDataBaseStringConstants{
   static TABLE_WORK_ORDER_SCENE_NAME:string = "workOrderScene"
   static CREATE_TABLE_WORK_ORDER_SUCCESSFULLY:string = "数据表工单表创建成功"
   static CREATE_TABLE_WORK_ORDER_SCENE_SUCCESSFULLY:string = "数据表凭证表创建成功"
+  static CREATE_TABLE_INDEX_SUCCESSFULLY:string = "数据表索引创建成功"
   static CREATE_TABLE_WORK_ORDER_FAILED:string = "数据表工单表创建失败"
   static CREATE_TABLE_WORK_ORDER_SCENE_FAILED:string = "数据表凭证表创建失败"
   static MISS_DATABASE:string = "数据库还未初始化"
@@ -23,11 +24,16 @@ export class AppDataBaseStringConstants{
 
 
   //========SQL==============
-  static TABLE_WORK_ORDER_SQL:string = "CREATE TABLE IF NOT EXISTS workOrder(id INTEGER PRIMARY KEY AUTOINCREMENT,workOrderTitle TEXT,workOrderDetail TEXT,status INTEGER,submitPerson TEXT,locationCheck TEXT，createTime INTEGER);"
+  static TABLE_WORK_ORDER_SQL:string = "CREATE TABLE IF NOT EXISTS workOrder(id INTEGER PRIMARY KEY AUTOINCREMENT,workOrderTitle TEXT,workOrderDetail TEXT,status INTEGER,submitPerson TEXT,locationCheck TEXT,createTime INTEGER);"
   static TABLE_WORK_ORDER_SCENE_SQL:string = "CREATE TABLE IF NOT EXISTS workOrderScene (id INTEGER PRIMARY KEY AUTOINCREMENT, workOrderId INTEGER, scenePath TEXT);"
+  static INDEX_WORK_ORDER_STATUS = "CREATE INDEX IF NOT EXISTS idx_workOrder_status ON workOrder(status);"
+
+  static INDEX_WORK_ORDER_CREATE_TIME = "CREATE INDEX IF NOT EXISTS idx_workOrder_createTime ON workOrder(createTime);"
+
+  static INDEX_WORK_ORDER_SCENE_WORK_ORDER_ID = "CREATE INDEX IF NOT EXISTS idx_scene_workOrderId ON workOrderScene(workOrderId);"
   static QUERY_ALL_SQL:string = "SELECT * FROM "
-  static QUERY_COUNT_WITH_READY:string = "SELECT count(*) FROM " + AppDataBaseStringConstants.TABLE_WORK_ORDER_NAME+" WHERE STATUS = 1"
-  static QUERY_COUNT_WITH_FINISHED:string = "SELECT count(*) FROM " + AppDataBaseStringConstants.TABLE_WORK_ORDER_NAME+" WHERE STATUS = 2"
+  static QUERY_COUNT_WITH_READY:string = "SELECT count(*) AS count FROM " + AppDataBaseStringConstants.TABLE_WORK_ORDER_NAME+" WHERE status = 0"
+  static QUERY_COUNT_WITH_FINISHED:string = "SELECT count(*) AS count FROM " + AppDataBaseStringConstants.TABLE_WORK_ORDER_NAME+" WHERE status = 1"
   static COUNT:string = "count"
   //=========字段==========
   static TABLE_ID: string = "id";
@@ -42,6 +48,17 @@ export class AppDataBaseStringConstants{
   static SCENE_ID: string = "id";
   static SCENE_PATH: string="scenePath"
   static WORK_ORDER_ID: string ="workOrderId"
+
+
+
+  static FINISH: string ="finish"
+  static READY: string ="ready"
+
+  static NO_DATA:string = "暂无数据"
+
+  static APP_STORAGE_NOW_WORK_ID:string = "nowWorkId"
+
+
 
 
 

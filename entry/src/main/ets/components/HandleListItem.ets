@@ -1,61 +1,47 @@
+import { AppDataBaseStringConstants } from '../constants/AppDataBaseStringConstants'
 import { AppTextStringConstants } from '../constants/AppTextStringConstants'
 import { Theme } from '../constants/Theme'
-
-export  interface HandleData{
-  title:string,
-  description:string,
-  createTime:string,
-  status:number
-}
+import { WorkOrder } from '../models/Entity/WorkOrder'
 
 
-
-@Component
+@ComponentV2
 export struct HandleListItem{
-  @Consume pathStack:NavPathStack
+  @Consumer("pathStack") pathStack:NavPathStack = undefined!
 
-  @Prop handleData:HandleData
-  @Prop useSelfPadding:boolean
-  @Prop useOneLine:boolean
+  @Require @Param workOrder:WorkOrder
+  @Param useSelfPadding:boolean = false
+  @Param useOneLine:boolean = false
 
-  getStatus():string{
-    if(this.handleData.status === 0){
-      return AppTextStringConstants.STATUS_READY_TO_HANDLE
-    }
-    if(this.handleData.status === 1){
-      return AppTextStringConstants.STATUS_FINISHED
-    }
-    if(this.handleData.status === 2){
-      return AppTextStringConstants.STATUS_APPROVE
-    }
+  @Event action:()=>void= ()=>{}
 
-    //默认返回
-    return AppTextStringConstants.STATUS_APPROVE
-}
 
+  actionData():void{
+    AppStorage.setOrCreate(AppDataBaseStringConstants.APP_STORAGE_NOW_WORK_ID,this.workOrder.id)
+    this.pathStack.pushPathByName("WorkOrderDetailPage",this.workOrder,()=>{this.action();console.log("我是回调！！！！！！！！！！！！！！！")})
+  }
 
 
   build() {
     Row(){
       Row(){
         Column({space:10}){
-          Text(this.handleData.title)
+          Text(this.workOrder.workOrderTitle)
             .fontSize(Theme.PrimaryBody.fontsize)
             .fontWeight(Theme.PrimaryBody.fontWeight)
             .fontColor(Theme.PrimaryBody.fontColor)
 
-          Text(this.handleData.description)
+          Text(this.workOrder.workOrderDetail)
             .maxLines(this.useOneLine?1:null)
             .fontSize(Theme.SecondaryText.fontsize)
             .fontWeight(Theme.SecondaryText.fontWeight)
             .fontColor(Theme.SecondaryText.fontColor)
 
           Row({space:10}){
-            Text("今天")
+            Text(this.workOrder.TimeText)
               .fontSize(Theme.Caption_PlaceHolder.fontsize)
               .fontWeight(Theme.Caption_PlaceHolder.fontWeight)
               .fontColor(Theme.Caption_PlaceHolder.fontColor)
-            Text(this.handleData.createTime)
+            Text(this.workOrder.hour)
               .fontSize(Theme.Caption_PlaceHolder.fontsize)
               .fontWeight(Theme.Caption_PlaceHolder.fontWeight)
               .fontColor(Theme.Caption_PlaceHolder.fontColor)
@@ -68,7 +54,7 @@ export struct HandleListItem{
         .justifyContent(FlexAlign.Start)
         .alignItems(HorizontalAlign.Start)
 
-        Text(this.getStatus())
+        Text(this.workOrder.StatusText)
           .fontSize(Theme.Caption_PlaceHolder.fontsize)
           .fontWeight(Theme.SecondaryText.fontWeight)
           .fontColor(Theme.PrimaryAccent)
@@ -88,7 +74,7 @@ export struct HandleListItem{
     }
     .padding({ left:this.useSelfPadding?20:0,right:this.useSelfPadding?20:0,})
     .onClick(()=>{
-      this.pathStack.pushPathByName("WorkOrderDetailPage",this.handleData)
+        this.actionData()
     })
 
   }

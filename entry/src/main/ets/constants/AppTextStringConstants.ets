@@ -30,7 +30,7 @@ export class AppTextStringConstants{
 
   static STATUS_FINISHED:string= '已完成'
 
-  static STATUS_APPROVE:string= '审批中'
+  static STATUS_APPROVE:string= '待完成'
 
   static CREATE_NEW:string = '新建'
 
@@ -42,7 +42,7 @@ export class AppTextStringConstants{
 
   static USER_NAME:string = '帕拉德帕'
 
-  static REJECT_HANDLE:string = '取消'
+  static DELETE_DATA:string = '删除'
 
   static CONFIRM_FINISH:string = '确认完成'
 

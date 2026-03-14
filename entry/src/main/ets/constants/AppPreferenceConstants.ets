@@ -4,4 +4,6 @@ export class AppPreferenceConstants{
   static USER_TOKEN:string = "token"
 
   static LOGIN_STATUS:string = "isLogin"
+
+  static USER_NAME:string = "userName"
 }

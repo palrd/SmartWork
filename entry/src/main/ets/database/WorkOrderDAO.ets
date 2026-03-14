@@ -35,7 +35,6 @@ class WorkOrderDAO{
      }
      //去拿到scene的数据，然后放到相关workOrder
      let predicateForScene:relationalStore.RdbPredicates = new relationalStore.RdbPredicates(AppDataBaseStringConstants.TABLE_WORK_ORDER_SCENE_NAME)
-     //卡在这一步，不知道这个ids该怎么拿，如果要抽方法的话,难道只抽出前半部吗，如果还要往下，我能想到就只有把db送进去了，在方法内查一次库
      predicateForScene.in(AppDataBaseStringConstants.WORK_ORDER_ID,ids)
 
      let sceneResultSet:relationalStore.ResultSet =await db.query(predicateForScene)
@@ -47,7 +46,7 @@ class WorkOrderDAO{
      try {
        while (sceneResultSet.goToNextRow()){
          let scene:WorkOrderScene = WorkOrderScene.fromRow(sceneResultSet)
-         orders.get(scene.workOrderId)?.workOrderScene.push(scene)
+         orders.get(scene.workOrderId!)?.workOrderScene.push(scene)
        }
      }catch (e){
        throw new Error(String(e))
@@ -87,6 +86,7 @@ class WorkOrderDAO{
         return await this.mixWorkOrders(workOrderResultSet,db)
 
       }catch (e) {
+        console.error("错误来自queryWorkOrderPage");
         throw new Error(String(e))
 
       }
@@ -94,7 +94,7 @@ class WorkOrderDAO{
     }
 
     //插入工单
-    async insertWorkOrder(workOrder:WorkOrder):Promise<void>{
+    async insertWorkOrder(workOrder:WorkOrder):Promise<number>{
       let db = dataBaseService.getRDB()
       if(!db){
         throw new Error(AppDataBaseStringConstants.MISS_DATABASE)
@@ -107,6 +107,7 @@ class WorkOrderDAO{
           'status' :workOrder.status,
           'submitPerson' : workOrder.submitPerson,
           'locationCheck' : workOrder.locationCheck,
+          'createTime': workOrder.createTime
         }
         db.beginTransaction()
         let orderId:number = await db.insert(AppDataBaseStringConstants.TABLE_WORK_ORDER_NAME,workOrderFotInsert)
@@ -122,15 +123,18 @@ class WorkOrderDAO{
           await db.batchInsert(AppDataBaseStringConstants.TABLE_WORK_ORDER_SCENE_NAME,workOrdersSceneForInsert)
         }
         db.commit()
+
         console.log(AppDataBaseStringConstants.INSERT_TABLE_WORK_ORDER_SUCCESSFULLY)
+        return orderId
       }catch (e){
         db.rollBack()
+        console.error("错误来自insertWorkOrder");
         throw new Error(String(e))
       }
     }
 
     //根据工单状态查询工单
-    async queryWorkOrderByStatus(status:number,pageNumber:number,pageSize:number):Promise<Array<WorkOrder>>{
+    async queryWorkOrderByStatus(pageNumber:number,pageSize:number,status:number,):Promise<Array<WorkOrder>>{
      try {
        let db =dataBaseService.getRDB()
        if(!db){
@@ -149,6 +153,8 @@ class WorkOrderDAO{
        return await this.mixWorkOrders(workOrderResultSet,db)
 
      }catch (e){
+       console.error("错误来自queryWorkOrderByStatus");
+
        throw new Error(String(e))
 
      }
@@ -170,18 +176,20 @@ class WorkOrderDAO{
           await db.querySql(AppDataBaseStringConstants.QUERY_COUNT_WITH_FINISHED)
 
         try {
-          if (resultSetReady && resultSetFinish) {
-            resultSetReady.goToFirstRow()
-            resultSetFinish.goToFirstRow()
+          if (resultSetReady.goToFirstRow() && resultSetFinish.goToFirstRow()) {
 
-            let ready: number = resultSetReady.getLong(resultSetReady.getColumnIndex(AppDataBaseStringConstants.COUNT))
-            let finish: number = resultSetFinish.getLong(resultSetFinish.getColumnIndex(AppDataBaseStringConstants.COUNT))
-
+            let ready:number = resultSetReady.getLong(resultSetReady.getColumnIndex(AppDataBaseStringConstants.COUNT))
+            console.log("这里检索到准备完成数据；",ready);
             countStatus.set("ready", ready)
+
+            let finish:number =resultSetFinish.getLong(resultSetFinish.getColumnIndex(AppDataBaseStringConstants.COUNT))
+            console.log("这里检索到准备完成数据；",finish);
+
             countStatus.set("finish", finish)
           }
 
         } catch (e) {
+          console.error("getNumberOfFinishedAndToDo");
           throw new Error(String(e))
 
         } finally {
@@ -191,6 +199,8 @@ class WorkOrderDAO{
         return countStatus
 
       } catch (e) {
+        console.error("错误来自getNumberOfFinishedAndToDo");
+
         throw new Error(String(e))
       }
 
@@ -220,6 +230,8 @@ class WorkOrderDAO{
         }
         return await this.mixWorkOrders(workOrderResultSet,db)
       }catch (e) {
+        console.error("错误来自getRecentlyWorkOrders");
+
         throw new Error(String(e))
       }
     }
@@ -246,10 +258,87 @@ class WorkOrderDAO{
           db.commit()
         }catch (e) {
           db.rollBack()
+          console.error("错误来自deleteWorkOrderById");
+
           throw new Error(String(e))
         }
 
 
+    }
+
+    async queryOrderById(id:number):Promise<WorkOrder>{
+      try {
+        let db = dataBaseService.getRDB()
+        if(!db){
+          console.error("queryOrderById");
+          throw new Error()
+        }
+        let predicateForWorkOrder = new relationalStore.RdbPredicates(AppDataBaseStringConstants.TABLE_WORK_ORDER_NAME)
+        predicateForWorkOrder.equalTo(AppDataBaseStringConstants.TABLE_ID,id)
+        let resultSetForWorkOrder:relationalStore.ResultSet =await db.query(predicateForWorkOrder)
+        if(!resultSetForWorkOrder.goToFirstRow()){
+          console.log("此处为空")
+          return WorkOrder.unUseAbleOrder()
+        }
+        let workOrder:WorkOrder = WorkOrder.fromRow(resultSetForWorkOrder)
+       try {
+
+           let predicateForScene = new relationalStore.RdbPredicates(AppDataBaseStringConstants.TABLE_WORK_ORDER_SCENE_NAME)
+           predicateForScene.equalTo(AppDataBaseStringConstants.WORK_ORDER_ID,id)
+           let resultSetForScene:relationalStore.ResultSet = await db.query(predicateForScene)
+           if(!resultSetForScene){
+             console.log("此处scene为空")
+
+             return workOrder
+
+           }
+          try {
+            let scenes:Array<WorkOrderScene> =[]
+            while (resultSetForScene.goToNextRow()){
+              let scene:WorkOrderScene = WorkOrderScene.fromRow(resultSetForScene)
+              scenes.push(scene)
+            }
+            //注入
+            workOrder.workOrderScene = scenes
+            return workOrder
+          }catch (e) {
+            resultSetForScene.close()
+            console.error("queryOrderById");
+            throw new Error()
+          }
+
+       }catch (e) {
+         resultSetForWorkOrder.close()
+         console.error("queryOrderById");
+         throw new Error()
+       }
+
+      }catch (e) {
+        console.error("queryOrderById");
+        throw new Error()
+      }
+    }
+
+
+    async updateWorkOrderStatusById(id:number):Promise<number>{
+     try {
+       let db =dataBaseService.getRDB()
+       if(!db){
+         throw new Error()
+
+       }
+       let predicate:relationalStore.RdbPredicates = new relationalStore.RdbPredicates(AppDataBaseStringConstants.TABLE_WORK_ORDER_NAME)
+       predicate.equalTo(AppDataBaseStringConstants.TABLE_ID,id)
+       let value:relationalStore.ValuesBucket={
+         'status':1
+       }
+       let rowId = await db.update(value,predicate)
+       return rowId
+
+     }catch (e) {
+       throw new Error(String(e))
+
+     }
     }
 
 

@@ -2,9 +2,10 @@ import { AppTextStringConstants } from "../constants/AppTextStringConstants"
 import { Theme } from "../constants/Theme"
 
 
-@Component
+@ComponentV2
 export struct ProfilePage{
-  @Consume pathStack:NavPathStack
+  @Consumer("pathStack") pathStack:NavPathStack =undefined!
+
 
   build() {
       NavDestination(){

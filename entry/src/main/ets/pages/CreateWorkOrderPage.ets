@@ -1,6 +1,8 @@
 import { AppTextStringConstants } from '../constants/AppTextStringConstants'
 import { Theme } from '../constants/Theme'
-
+import { WorkOrder } from '../models/Entity/WorkOrder'
+import { dataBaseRepo } from '../repository/DataBaseRepo'
+import { ToastUtil } from '../utils/ToastUtil'
 
 
 @Builder
@@ -8,9 +10,35 @@ export function  CreateWorkOrderPageBuilder(){
   CreateWorkOrderPage()
 }
 
-@Component
+@ComponentV2
 struct CreateWorkOrderPage{
-  @Consume pathStack:NavPathStack
+  @Consumer("pathStack") pathStack:NavPathStack =undefined!
+
+  @Local workTitle:string = ''
+  @Local workDetail:string = ''
+  @Local location:string = '测试地点'
+  @Local scenes:Array<string> = []
+
+  async sureInsert():Promise<void>{
+    if(this.workTitle === ''){
+      ToastUtil.showToast(this.getUIContext(),"请先填写工单标题")
+      return
+    }
+    if(this.workDetail === ''){
+      ToastUtil.showToast(this.getUIContext(),"请描述问题")
+      return
+    }
+    if(this.location === ''){
+      ToastUtil.showToast(this.getUIContext(),"请获取定位")
+      return
+    }
+    let workOrder:WorkOrder = new WorkOrder(null,this.workTitle,this.workDetail,0,[],'',this.location,0)
+
+    let id = await dataBaseRepo.insertData(workOrder,this.scenes)
+
+    this.pathStack.pop(id)
+
+  }
 
   build() {
     NavDestination(){
@@ -23,6 +51,9 @@ struct CreateWorkOrderPage{
               .fontColor(Theme.PrimaryBody.fontColor)
               .backgroundColor(Color.Transparent)
               .placeholderColor(Theme.Caption_PlaceHolder.fontColor)
+              .onChange((value:string)=>{
+                this.workTitle = value
+              })
 
             Divider()
               .width('100%')
@@ -36,6 +67,9 @@ struct CreateWorkOrderPage{
               .backgroundColor(Color.Transparent)
               .placeholderColor(Theme.Caption_PlaceHolder.fontColor)
               .maxLines(null)
+              .onChange((value:string)=>{
+                this.workDetail = value
+              })
 
           }
           .border({
@@ -46,52 +80,6 @@ struct CreateWorkOrderPage{
           .padding(10)
           .alignItems(HorizontalAlign.Start)
           .backgroundColor(Theme.SecondaryBackGround)
-
-
-          Column({space:15}){
-            Row(){
-              Text(AppTextStringConstants.TYPE_FOR_CREATE_WORK_ORDER)
-                .fontSize(Theme.PrimaryBody.fontsize)
-                .fontWeight(Theme.PrimaryBody.fontWeight)
-                .fontColor(Theme.PrimaryBody.fontColor)
-              Text("请选择 >")
-                .fontSize(Theme.PrimaryBody.fontsize)
-                .fontWeight(Theme.PrimaryBody.fontWeight)
-                .fontColor(Theme.PrimaryAccent)
-                .onClick(()=>{
-                  console.log("PICKER");
-                })
-            }
-            .width('100%')
-            .justifyContent(FlexAlign.SpaceBetween)
-
-            Divider()
-              .strokeWidth(1)
-              .width('100%')
-
-            Row(){
-              Text(AppTextStringConstants.EXPECTATION_TIME_FOR_FINISH)
-                .fontSize(Theme.PrimaryBody.fontsize)
-                .fontWeight(Theme.PrimaryBody.fontWeight)
-                .fontColor(Theme.PrimaryBody.fontColor)
-              Text("今天 >")
-                .fontSize(Theme.PrimaryBody.fontsize)
-                .fontWeight(Theme.PrimaryBody.fontWeight)
-                .fontColor(Theme.PrimaryAccent)
-                .onClick(()=>{
-                  console.log("PICKER");
-                })
-            }
-            .width('100%')
-            .justifyContent(FlexAlign.SpaceBetween)
-
-
-          }
-          .width('100%')
-          .padding(20)
-          .backgroundColor(Theme.PrimaryBackGround)
-          .border({radius:20})
-
 
           Column({space:15}){
             Text(AppTextStringConstants.UPDATE_SCENE_PHOTO)
@@ -114,7 +102,7 @@ struct CreateWorkOrderPage{
             })
             .justifyContent(FlexAlign.Center)
             .onClick(()=>{
-              console.log("pick");
+              this.scenes.push("凭证")
             })
 
             Divider()
@@ -131,7 +119,7 @@ struct CreateWorkOrderPage{
                 .fontWeight(Theme.PrimaryBody.fontWeight)
                 .fontColor(Theme.PrimaryAccent)
                 .onClick(()=>{
-                  console.log("PICKER");
+                  this.location = '研发部'
                 })
             }
             .width('100%')
@@ -155,8 +143,9 @@ struct CreateWorkOrderPage{
           }
           .width('100%')
           .padding(20)
-
-
+          .onClick(()=>{
+            this.sureInsert()
+          })
 
 
         }

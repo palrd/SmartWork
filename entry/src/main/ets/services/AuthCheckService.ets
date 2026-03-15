@@ -7,6 +7,7 @@ class AuthCheckService{
       //粗筛
 
       let isLogin = await preferenceService.hasPreference(AppPreferenceConstants.USER_TOKEN)
+
       return isLogin
     }catch (e){
       throw new Error(String(e))

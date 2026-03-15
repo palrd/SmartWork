@@ -56,7 +56,7 @@ export class AppTextStringConstants{
 
   static UPDATE_SCENE_PHOTO:string =  '上传凭证'
 
-  static GET_LOCATION:string = '获取定位'
+  static GET_LOCATION:string = '稍后将自动获取'
 
   static SUBMIT_WORK_ORDER:string='提交工单'
 

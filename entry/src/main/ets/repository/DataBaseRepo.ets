@@ -3,6 +3,7 @@ import { AppPreferenceConstants } from '../constants/AppPreferenceConstants';
 import { workOrderDAO } from '../database/WorkOrderDAO';
 import { WorkOrder } from '../models/Entity/WorkOrder';
 import { WorkOrderScene } from '../models/Entity/WorkOrderScene';
+import { locationService } from '../services/LocationService';
 
 class DataBaseRepo{
   //向UI提供查询最近工单的查询方法
@@ -47,7 +48,7 @@ class DataBaseRepo{
     return result
   }
 
-  async insertData(workOrder:WorkOrder,scenes:Array<string>):Promise<number>{
+  async insertData(workOrder:WorkOrder,scenes:Array<string>,context:UIContext):Promise<number>{
     try {
       //ui层只负责传递title，detail，location，scenes路径数组
       //所以在repo中需要将工单提交者名称，时间戳拼接,将scenes路径数组转成workOrderScenes
@@ -64,6 +65,9 @@ class DataBaseRepo{
       }
       workOrder.submitPerson = submitPerson
       workOrder.createTime = createTime
+      //尝试自动获取位置
+      let location:string =await locationService.getLocation(context);
+      workOrder.locationCheck = location;
       //调用dao
       let orderId =  await workOrderDAO.insertWorkOrder(workOrder)
       return orderId

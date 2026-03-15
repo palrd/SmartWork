@@ -2,6 +2,7 @@ import { AppDataBaseStringConstants } from '../constants/AppDataBaseStringConsta
 import { AppTextStringConstants } from '../constants/AppTextStringConstants'
 import { Theme } from '../constants/Theme'
 import { WorkOrder } from '../models/Entity/WorkOrder'
+import { locationService } from '../services/LocationService'
 
 
 @ComponentV2

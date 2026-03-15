@@ -34,7 +34,7 @@ struct CreateWorkOrderPage{
     }
     let workOrder:WorkOrder = new WorkOrder(null,this.workTitle,this.workDetail,0,[],'',this.location,0)
 
-    let id = await dataBaseRepo.insertData(workOrder,this.scenes)
+    let id = await dataBaseRepo.insertData(workOrder,this.scenes,this.getUIContext())
 
     this.pathStack.pop(id)
 
@@ -118,9 +118,7 @@ struct CreateWorkOrderPage{
                 .fontSize(Theme.PrimaryBody.fontsize)
                 .fontWeight(Theme.PrimaryBody.fontWeight)
                 .fontColor(Theme.PrimaryAccent)
-                .onClick(()=>{
-                  this.location = '研发部'
-                })
+
             }
             .width('100%')
             .justifyContent(FlexAlign.SpaceBetween)

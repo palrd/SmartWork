@@ -4,6 +4,7 @@ import { UserDTO } from "../models/DTO/UserDTO";
 import {UserVO} from "../models/VO/UserVO";
 
 import { httpService } from "../services/HttpService";
+import { locationService } from "../services/LocationService";
 import { preferenceService } from "../services/PreferenceService";
 
 export class LoginRepository{
@@ -17,6 +18,8 @@ export class LoginRepository{
      await preferenceService.putPreference(AppPreferenceConstants.USER_TOKEN,result.username)
      //储存用户名
      await preferenceService.putPreference(AppPreferenceConstants.USER_NAME,result.username)
+
+
    }catch (e){
       throw new Error(String(e))
    }

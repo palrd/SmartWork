@@ -23,6 +23,7 @@ struct Home{
           HomePage()
         }
         .tabBar(AppTextStringConstants.HOMEPAGE)
+
         TabContent(){
           WorkOrderListPage()
         }

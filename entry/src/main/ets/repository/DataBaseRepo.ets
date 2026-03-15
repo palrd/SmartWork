@@ -12,8 +12,6 @@ class DataBaseRepo{
     try {
       let result = await workOrderDAO.getRecentlyWorkOrders()
 
-
-      //数据做一些处理
       return result
     }catch (e) {
       throw new Error("获取最近工单失败")

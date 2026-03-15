@@ -2,9 +2,11 @@ import { HandleListItem } from '../components/HandleListItem'
 import { AppDataBaseStringConstants } from '../constants/AppDataBaseStringConstants'
 import { AppTextStringConstants } from '../constants/AppTextStringConstants'
 import { Theme } from '../constants/Theme'
-import { WorkOrderDatasource } from '../dataSource/WorkOrderDataSource'
 import { WorkOrder } from '../models/Entity/WorkOrder'
 import { dataBaseRepo } from '../repository/DataBaseRepo'
+import {emitter} from "@kit.BasicServicesKit";
+import { AppEventConstants } from '../constants/AppEventsConstants'
+
 
 @ComponentV2
 export  struct WorkOrderListPage{
@@ -17,6 +19,15 @@ export  struct WorkOrderListPage{
  aboutToAppear(): void {
    this.loadData()
 
+ }
+
+ refresh():void{
+    this.loadData();
+    console.log("我被call了")
+    emitter.emit({
+      eventId:AppEventConstants.REFRESH_EVENT
+
+    })
  }
 
   async loadData():Promise<void>{
@@ -69,7 +80,7 @@ export  struct WorkOrderListPage{
                 Repeat(this.dataSourceForAll)
                   .each((orders:RepeatItem<WorkOrder>)=>{
                     ListItem(){
-                      HandleListItem({workOrder:orders.item,useSelfPadding:true,useOneLine:true,action:()=>{this.loadData()}})
+                      HandleListItem({workOrder:orders.item,useSelfPadding:true,useOneLine:true,action:()=>{this.refresh()}})
                     }
                   })
                   .key((item:WorkOrder)=>{return item.id?.toString()+'_'+item.status.toString()})
@@ -101,7 +112,7 @@ export  struct WorkOrderListPage{
                 Repeat(this.dataSourceForReady)
                   .each((orders:RepeatItem<WorkOrder>)=>{
                     ListItem(){
-                      HandleListItem({workOrder:orders.item,useSelfPadding:true,useOneLine:true,action:()=>{this.loadData()}})
+                      HandleListItem({workOrder:orders.item,useSelfPadding:true,useOneLine:true,action:()=>{this.refresh()}})
                     }
                   })
                   .key((item:WorkOrder)=>{return item.id?.toString()+'_'+item.status.toString()})
@@ -131,7 +142,7 @@ export  struct WorkOrderListPage{
               Repeat(this.dataSourceForFinish)
                 .each((orders:RepeatItem<WorkOrder>)=>{
                   ListItem(){
-                    HandleListItem({workOrder:orders.item,useSelfPadding:true,useOneLine:true,action:()=>{this.loadData()}})
+                    HandleListItem({workOrder:orders.item,useSelfPadding:true,useOneLine:true,action:()=>{this.refresh()}})
                   }
                 })
                 .key((item:WorkOrder)=>{return item.id?.toString()+'_'+item.status.toString()})

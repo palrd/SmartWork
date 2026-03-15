@@ -4,10 +4,11 @@ import { AppPreferenceConstants } from "../constants/AppPreferenceConstants"
 import { AppShowToastStringConstants } from "../constants/AppShowToastStringConstants"
 import { AppTextStringConstants } from "../constants/AppTextStringConstants"
 import { Theme } from "../constants/Theme"
-import { WorkOrderDatasource } from "../dataSource/WorkOrderDataSource"
 import { WorkOrder } from "../models/Entity/WorkOrder"
 import { dataBaseRepo } from "../repository/DataBaseRepo"
 import { ToastUtil } from "../utils/ToastUtil"
+import {emitter} from "@kit.BasicServicesKit";
+import { AppEventConstants } from "../constants/AppEventsConstants"
 
 
 @ComponentV2
@@ -19,10 +20,20 @@ export struct HomePage{
   @Local ready:string = ''
 
   aboutToAppear(): void {
+    emitter.on({eventId:AppEventConstants.REFRESH_EVENT},()=>{
+      this.loadData();
+      console.log("回调执行了");
+    })
     this.loadData()
     ToastUtil.showToast(this.getUIContext(),AppShowToastStringConstants.LOGIN_SUCCESS+AppStorage.get(AppPreferenceConstants.USER_NAME))
 
   }
+
+  aboutToDisappear(): void {
+    emitter.off(AppEventConstants.REFRESH_EVENT)
+  }
+
+
 
   async loadData(){
     let result = await dataBaseRepo.getRecentlyWorkOrders()
@@ -30,7 +41,7 @@ export struct HomePage{
     let map = await dataBaseRepo.getFinishAndReady()
     this.ready = map.get(AppDataBaseStringConstants.READY)?.toString()!
     this.finish = map.get(AppDataBaseStringConstants.FINISH)?.toString()!
-
+    console.log("我再次执行")
   }
 
 

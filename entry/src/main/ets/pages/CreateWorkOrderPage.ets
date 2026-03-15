@@ -3,6 +3,8 @@ import { Theme } from '../constants/Theme'
 import { WorkOrder } from '../models/Entity/WorkOrder'
 import { dataBaseRepo } from '../repository/DataBaseRepo'
 import { ToastUtil } from '../utils/ToastUtil'
+import { emitter } from '@kit.BasicServicesKit'
+import { AppEventConstants } from '../constants/AppEventsConstants'
 
 
 @Builder
@@ -35,7 +37,9 @@ struct CreateWorkOrderPage{
     let workOrder:WorkOrder = new WorkOrder(null,this.workTitle,this.workDetail,0,[],'',this.location,0)
 
     let id = await dataBaseRepo.insertData(workOrder,this.scenes,this.getUIContext())
-
+    emitter.emit({
+      eventId:AppEventConstants.REFRESH_EVENT
+    })
     this.pathStack.pop(id)
 
   }

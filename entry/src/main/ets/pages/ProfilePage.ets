@@ -1,3 +1,4 @@
+import { AppPreferenceConstants } from "../constants/AppPreferenceConstants"
 import { AppTextStringConstants } from "../constants/AppTextStringConstants"
 import { Theme } from "../constants/Theme"
 
@@ -5,6 +6,11 @@ import { Theme } from "../constants/Theme"
 @ComponentV2
 export struct ProfilePage{
   @Consumer("pathStack") pathStack:NavPathStack =undefined!
+  @Local userName:string = ''
+
+  aboutToAppear(): void {
+    this.userName = AppStorage.get(AppPreferenceConstants.USER_NAME)!
+  }
 
 
   build() {
@@ -23,7 +29,7 @@ export struct ProfilePage{
               .border({radius:30})
 
             Column(){
-              Text(AppTextStringConstants.USER_NAME)
+              Text(this.userName)
                 .fontColor(Theme.PrimaryTitle.fontColor)
                 .fontSize(Theme.PrimaryTitle.fontsize)
                 .fontWeight(Theme.PrimaryTitle.fontWeight)

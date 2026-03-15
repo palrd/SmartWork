@@ -33,10 +33,8 @@ export default class EntryAbility extends UIAbility {
       //初始化数据库
       await dataBaseService.initDB(this.context)
       let isLogin =await authCheckService.checkLogin()
-      let userName = await loginRepository.getUserName()
 
       AppStorage.setOrCreate(AppPreferenceConstants.LOGIN_STATUS,isLogin)
-      AppStorage.setOrCreate(AppPreferenceConstants.USER_NAME,userName)
 
       windowStage.loadContent('pages/Index', (err) => {
         if (err.code) {

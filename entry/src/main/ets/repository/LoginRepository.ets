@@ -10,14 +10,29 @@ import { preferenceService } from "../services/PreferenceService";
 export class LoginRepository{
 
   //这个方法就是向上提供给UI使用的
-  async login(userDTO:UserDTO):Promise<void>{
+  async login(userDTO:UserDTO):Promise<boolean>{
    try{
      //从服务器获取数据
      let result:UserVO = await httpService.postRequest<UserVO>(ApiConstants.baseURL+ApiConstants.loginAPI,userDTO)
+
+     console.log("用户名：",result.username);
      //进行token存储
      await preferenceService.putPreference(AppPreferenceConstants.USER_TOKEN,result.username)
      //储存用户名
      await preferenceService.putPreference(AppPreferenceConstants.USER_NAME,result.username)
+     //储存完成后放到内存
+     AppStorage.setOrCreate(AppPreferenceConstants.USER_NAME,result.username)
+
+     if(AppStorage.get(AppPreferenceConstants.USER_NAME) !== undefined){
+
+       console.log("用户名存储成功！",AppStorage.get(AppPreferenceConstants.USER_NAME) );
+       return true
+     }
+     else {
+       console.log("用户名存储失败！");
+
+       return false;
+     }
 
 
    }catch (e){

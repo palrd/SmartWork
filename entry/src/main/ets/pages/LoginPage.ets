@@ -1,4 +1,5 @@
 import { AppErrorStringConstants } from "../constants/AppErrorStringConstants"
+import { AppPreferenceConstants } from "../constants/AppPreferenceConstants"
 import { AppShowToastStringConstants } from "../constants/AppShowToastStringConstants"
 import { AppTextStringConstants } from "../constants/AppTextStringConstants"
 import { Theme } from "../constants/Theme"
@@ -27,9 +28,12 @@ struct LoginPage{
   async login(){
     try {
       if(this.userDTO.username !== '' && this.userDTO.password!== ''){
-        await loginRepository.login(this.userDTO)
+        let result =  await loginRepository.login(this.userDTO)
+        if(!result){
+          console.log("登录失败");
+          return;
+        }
         this.pathStack.replacePathByName("Home",null)
-        ToastUtil.showToast(this.getUIContext(),AppShowToastStringConstants.LOGIN_SUCCESS+this.userDTO.username)
 
       }else {
         ToastUtil.showToast(this.getUIContext(),AppErrorStringConstants.MISS_LOGIN_USER_NAME)

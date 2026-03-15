@@ -36,6 +36,8 @@ struct WorkOrderDetailPage{
     this.workOrder.submitPerson = order.submitPerson
     this.workOrder.locationCheck = order.locationCheck
 
+    console.log("工单对象载入：",order.submitPerson)
+
   }
 
   async confirmFinish(){

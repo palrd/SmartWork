@@ -47,6 +47,7 @@ class HttpService {
 
       //处理回来的数据
       //处理后强转为需要的参数
+      console.log("请求成功！");
       let result =JSON.parse( httpResponse.result  as string) as T
 
       return result

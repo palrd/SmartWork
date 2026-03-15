@@ -1,10 +1,13 @@
 import { HandleListItem } from "../components/HandleListItem"
 import { AppDataBaseStringConstants } from "../constants/AppDataBaseStringConstants"
+import { AppPreferenceConstants } from "../constants/AppPreferenceConstants"
+import { AppShowToastStringConstants } from "../constants/AppShowToastStringConstants"
 import { AppTextStringConstants } from "../constants/AppTextStringConstants"
 import { Theme } from "../constants/Theme"
 import { WorkOrderDatasource } from "../dataSource/WorkOrderDataSource"
 import { WorkOrder } from "../models/Entity/WorkOrder"
 import { dataBaseRepo } from "../repository/DataBaseRepo"
+import { ToastUtil } from "../utils/ToastUtil"
 
 
 @ComponentV2
@@ -17,6 +20,8 @@ export struct HomePage{
 
   aboutToAppear(): void {
     this.loadData()
+    ToastUtil.showToast(this.getUIContext(),AppShowToastStringConstants.LOGIN_SUCCESS+AppStorage.get(AppPreferenceConstants.USER_NAME))
+
   }
 
   async loadData(){

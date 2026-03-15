@@ -4,6 +4,7 @@ import { workOrderDAO } from '../database/WorkOrderDAO';
 import { WorkOrder } from '../models/Entity/WorkOrder';
 import { WorkOrderScene } from '../models/Entity/WorkOrderScene';
 import { locationService } from '../services/LocationService';
+import { preferenceService } from '../services/PreferenceService';
 
 class DataBaseRepo{
   //向UI提供查询最近工单的查询方法
@@ -52,7 +53,10 @@ class DataBaseRepo{
     try {
       //ui层只负责传递title，detail，location，scenes路径数组
       //所以在repo中需要将工单提交者名称，时间戳拼接,将scenes路径数组转成workOrderScenes
-      let submitPerson:string = AppStorage.get(AppPreferenceConstants.USER_NAME)!
+      let userName =await preferenceService.getPreferenceValue(AppPreferenceConstants.USER_NAME);
+      workOrder.submitPerson = userName;
+      console.log("从硬盘中获取提交者",userName)
+
       let createTime:number = Date.now()
       if(scenes.length!==0){
         let workOrderScenes:Array<WorkOrderScene> = []
@@ -63,7 +67,6 @@ class DataBaseRepo{
         //注入
         workOrder.workOrderScene = workOrderScenes
       }
-      workOrder.submitPerson = submitPerson
       workOrder.createTime = createTime
       //尝试自动获取位置
       let location:string =await locationService.getLocation(context);

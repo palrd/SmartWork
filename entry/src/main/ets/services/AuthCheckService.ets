@@ -4,11 +4,14 @@ import { preferenceService } from './PreferenceService'
 class AuthCheckService{
   async checkLogin():Promise<boolean>{
     try {
-      //粗筛
+      let userName = await preferenceService.getPreferenceValue(AppPreferenceConstants.USER_NAME)
+      if(userName !== "default"){
+        AppStorage.setOrCreate(AppPreferenceConstants.USER_NAME,userName)
+        return true
 
-      let isLogin = await preferenceService.hasPreference(AppPreferenceConstants.USER_TOKEN)
+      }
+      return false;
 
-      return isLogin
     }catch (e){
       throw new Error(String(e))
     }

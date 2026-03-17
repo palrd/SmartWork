@@ -1,6 +1,10 @@
 SmartWork 企业级移动工单协作系统 2026.01 – 2026.03
+
+视频展示链接：
+https://www.bilibili.com/video/BV1BowUzxEct/?vd_source=6a5ec63f29e4ff95a269505dde7ee5c7
+
 独立全栈开发 技术栈：ArkTS + ArkUI V2 + Navigation + RelationalStore + NetworkKit + ArkWeb
-• 项目描述：面向企业外勤与巡检场景打造的鸿蒙原生移动工单协作平台。采用“离线优先 (OfflineFirst)”架构设计，解决外勤人员在地下室等弱网/无网环境下无法顺畅作业的痛点，实现工单创建、流
+• 项目描述：面向企业外勤与巡检场景打造的鸿蒙原生移动工单协作平台。采用“离线优先 (OfflineFirst)”架构设计，解决外勤人员在地下室等弱网/无网环境下无法顺畅作业的痛点，实现工单创建、流
 转、凭证打卡等全生命周期的高可用闭环。
 • 现代化架构与路由管理：采用 Repository-Service-DAO 四层架构解耦业务逻辑与 UI 渲染；使用原生
 Navigation 与 NavPathStack 统一管理页面栈和跨页传参，实现页面级完全解耦，代码复用率提升 40%。 • 状态管理与性能优化：率先接入 ArkUI V2 状态管理机制（@ObservedV2 / @Trace），实现深层级数据
